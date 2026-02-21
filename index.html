@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Good Morning | Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Removes blue flash on click in Android */
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Video: Optimized for Android Performance */
+        #bgVideo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1; /* Keep it at 1 */
+            transform: translate(-50%, -50%);
+            opacity: 0; /* Start hidden */
+            transition: opacity 1.5s ease; /* Very smooth fade in */
+            object-fit: cover;
+        }
+
+        /* Class to trigger the smooth reveal */
+        .video-active {
+            opacity: 1 !important;
+        }
+
+        /* Overlay to keep text readable */
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 1.5s;
+        }
+
+        .overlay-active {
+            opacity: 1;
+        }
+
+        /* Content Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 12vw, 5rem);
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            font-weight: 800;
+            animation: softBlink 3s infinite ease-in-out;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .start-btn {
+            padding: 18px 45px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 100px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.4s ease;
+        }
+
+        .start-btn:active { /* Mobile feedback */
+            transform: scale(0.9);
+            background: white;
+            color: black;
+        }
+
+        @keyframes softBlink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.98); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dark-overlay" id="overlay"></div>
+
+    <video id="bgVideo" muted loop playsinline preload="auto">
+        <source src="mg.mp4" type="video/mp4">
+    </video>
+
+    <div class="container">
+        <h1 id="title">Good Morning</h1>
+        <button class="start-btn" id="playBtn" onclick="runVideo()">Explore Day</button>
+    </div>
+
+    <script>
+        function runVideo() {
+            const video = document.getElementById('bgVideo');
+            const overlay = document.getElementById('overlay');
+            const btn = document.getElementById('playBtn');
+            const title = document.getElementById('title');
+
+            // 1. Play the video first (Crucial for mobile)
+            video.play();
+
+            // 2. Add classes for smooth animation
+            video.classList.add('video-active');
+            overlay.classList.add('overlay-active');
+
+            // 3. Smoothly fade out the button
+            btn.style.opacity = '0';
+            setTimeout(() => {
+                btn.style.display = 'none';
+                title.style.marginTop = "0"; // Adjust layout if needed
+            }, 500);
+        }
+    </script>
+</body>
+</html>
